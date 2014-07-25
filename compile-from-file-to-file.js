@@ -40,7 +40,6 @@ module.exports = {
   //   the other template files from being compiled/written.
   //
   dependencies: {
-    'node-machine': '*',
     'fs-extra': '*',
     'marked': '*'
   },
@@ -73,7 +72,6 @@ module.exports = {
   fn: function($i, $x, $d) {
 
     var fsx = $d['fs-extra'];
-    var M = $d['node-machine'];
 
     $i.beforeConvert = $i.beforeConvert || function (mdString, cb){ cb(null, mdString); };
     $i.afterConvert  = $i.afterConvert  || function (htmlString, cb){ cb(null, htmlString); };
@@ -112,6 +110,8 @@ module.exports = {
 
           $i.afterConvert(htmlString, function(err, htmlString) {
             if (err) return $x.couldNotCompile(err);
+
+            // console.log('Supposed ot have HTML string now (%s).. and supposed to write to "%s"',(htmlString||'').slice(0,10)+'...', $i.dest);
 
             fsx.outputFile($i.dest, htmlString, function(err) {
               if (err) return $x.couldNotWrite(err);
