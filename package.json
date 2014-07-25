@@ -17,7 +17,8 @@
   },
   "dependencies": {
     "fs-extra": "^0.10.0",
-    "node-machine": "0.0.4"
+    "node-machine": "0.0.4",
+    "marked": "^0.3.2"
   },
   "machinepack": {
     "focus": "markdown",
