@@ -5,13 +5,20 @@
   "scripts": {
     "test": "mocha -b"
   },
-  "keywords": ["markdown","machine","machines"],
+  "keywords": [
+    "markdown",
+    "machine",
+    "machines"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "mocha": "~1.19.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "fs-extra": "^0.10.0",
+    "node-machine": "0.0.4"
+  },
   "machinepack": {
     "focus": "markdown",
     "machine-api": "~0.0.0",
