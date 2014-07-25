@@ -41,7 +41,8 @@ module.exports = {
   //
   dependencies: {
     'node-machine': '*',
-    'fs-extra': '*'
+    'fs-extra': '*',
+    'marked': '*'
   },
   inputs: {
     src: {
@@ -83,7 +84,30 @@ module.exports = {
       $i.beforeConvert(mdString, function(err, mdString) {
         if (err) return $x.couldNotCompile(err);
 
-        M.require('./compile').configure({mdString:mdString}).exec(function(err, htmlString) {
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////
+        // TODO:
+        // Use the following one line of code:
+        // M.require('./compile').configure({mdString:mdString}).exec(function(err, htmlString) {
+
+        // instead of all this:
+        // -------------------------
+
+        /**
+         * Contants
+         * @type {Object}
+         */
+        var MARKED_OPTS = {
+          gfm: true,
+          tables: true,
+          langPrefix: 'lang-'
+        };
+
+        $d['marked'](mdString, MARKED_OPTS, function(err, htmlString) {
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////
           if (err) return $x.couldNotCompile(err);
 
           $i.afterConvert(htmlString, function(err, htmlString) {
