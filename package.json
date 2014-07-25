@@ -23,6 +23,8 @@
   "machinepack": {
     "focus": "markdown",
     "machine-api": "~0.0.0",
-    "machines": []
+    "machines": [
+      "compile-from-file-to-file"
+    ]
   }
 }
