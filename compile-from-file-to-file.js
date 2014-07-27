@@ -74,7 +74,12 @@ module.exports = {
     couldNotRead: {},
     couldNotWrite: {},
     couldNotCompile: {},
-    success: {}
+    success: {
+      example: {
+        uniqueID: 'sailssocketsunsubscribeFromFirehose999488',
+        displayName: 'sails.sockets.unsubscribeFromFirehose()'
+      }
+    }
   },
 
   fn: function($i, $x, $d) {
@@ -111,10 +116,9 @@ module.exports = {
         };
 
         // Parse metadata
-        var metadataTags = mdString.match(/<docmeta[^>]*>/igm);
-        var metadata = _.reduce(metadataTags||[], function (m, tag) {
+        var metadata = _.reduce(mdString.match(/<docmeta[^>]*>/igm)||[], function (m, tag) {
           try {
-            m[tag.match(/name="([^">]+)"/)[1]] = tag.match(/value="([^">]+)"/)[1];
+            m[tag.match(/name="([^">]+)"/i)[1]] = tag.match(/value="([^">]+)"/i)[1];
           } catch(e) {}
           return m;
         }, {});
@@ -132,7 +136,7 @@ module.exports = {
 
             fsx.outputFile($i.dest, htmlString, function(err) {
               if (err) return $x.couldNotWrite(err);
-              return $x.success();
+              return $x.success(metadata);
             });
           });
         });
