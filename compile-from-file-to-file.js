@@ -1,4 +1,12 @@
 /**
+ * Module dependencies
+ */
+
+var _ = require('lodash');
+
+
+
+/**
  *
  * ----------------------------------------
  * Usage:
@@ -101,6 +109,15 @@ module.exports = {
           tables: true,
           langPrefix: 'lang-'
         };
+
+        // Parse metadata
+        var metadataTags = mdString.match(/<docmeta[^>]*>/igm);
+        var metadata = _.reduce(metadataTags||[], function (m, tag) {
+          try {
+            m[tag.match(/name="([^">]+)"/)[1]] = tag.match(/value="([^">]+)"/)[1];
+          } catch(e) {}
+          return m;
+        }, {});
 
         $d['marked'](mdString, MARKED_OPTS, function(err, htmlString) {
         ////////////////////////////////////////////////////////////////////////////////////////
