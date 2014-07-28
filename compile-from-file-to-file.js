@@ -3,19 +3,9 @@
  */
 
 var _ = require('lodash');
+var fsx = require ('fs-extra');
+var M = require('node-machine');
 
-
-
-/**
- *
- * ----------------------------------------
- * Usage:
- *
- * require('node-machine')
- * .load('./lib/compile-from-file-to-file')
- * .configure(...)
- * .exec(...)
- */
 
 module.exports = {
 
@@ -47,10 +37,6 @@ module.exports = {
   //   available in closure scope.  It will be handled later, but shouldn't prevent
   //   the other template files from being compiled/written.
   //
-  dependencies: {
-    'fs-extra': '*',
-    'marked': '*'
-  },
   inputs: {
     src: {
       example: '.tmp/compile-markdown-tree/some/markdown/file.md'
@@ -84,8 +70,6 @@ module.exports = {
 
   fn: function($i, $x, $d) {
 
-    var fsx = $d['fs-extra'];
-
     $i.beforeConvert = $i.beforeConvert || function (mdString, cb){ cb(null, mdString); };
     $i.afterConvert  = $i.afterConvert  || function (htmlString, cb){ cb(null, htmlString); };
 
@@ -95,44 +79,13 @@ module.exports = {
       $i.beforeConvert(mdString, function(err, mdString) {
         if (err) return $x.couldNotCompile(err);
 
-        ////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////
-        // TODO:
-        // Use the following one line of code:
-        // M.require('./compile').configure({mdString:mdString}).exec(function(err, htmlString) {
-
-        // instead of all this:
-        // -------------------------
-
-        /**
-         * Contants
-         * @type {Object}
-         */
-        var MARKED_OPTS = {
-          gfm: true,
-          tables: true,
-          langPrefix: 'lang-'
-        };
-
-        // Parse metadata
-        var metadata = _.reduce(mdString.match(/<docmeta[^>]*>/igm)||[], function (m, tag) {
-          try {
-            m[tag.match(/name="([^">]+)"/i)[1]] = tag.match(/value="([^">]+)"/i)[1];
-          } catch(e) {}
-          return m;
-        }, {});
-
-        $d['marked'](mdString, MARKED_OPTS, function(err, htmlString) {
-        ////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////
+        M.build(require('./compile'))
+        .configure({mdString:mdString})
+        .exec(function(err, htmlString) {
           if (err) return $x.couldNotCompile(err);
 
           $i.afterConvert(htmlString, function(err, htmlString) {
             if (err) return $x.couldNotCompile(err);
-
-            // console.log('Supposed ot have HTML string now (%s).. and supposed to write to "%s"',(htmlString||'').slice(0,10)+'...', $i.dest);
 
             fsx.outputFile($i.dest, htmlString, function(err) {
               if (err) return $x.couldNotWrite(err);

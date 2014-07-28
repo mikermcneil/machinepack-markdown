@@ -1,11 +1,16 @@
+/**
+ * Module dependencies
+ */
+
+var _ = require('lodash');
+var marked = require('marked');
+
+
 module.exports = {
 
   id: 'compile',
   moduleName: 'machinepack-markdown',
   description: 'Compile some markdown to HTML.',
-  dependencies: {
-    marked: '*'
-  },
   inputs: {
     mdString: {
       example: '# hello world\n it\'s me, some markdown string \n\n ```js\n//but maybe i have code snippets too...\n```'
@@ -18,7 +23,7 @@ module.exports = {
     }
   },
 
-  fn: function($i, $x, $d) {
+  fn: function($i, $x) {
 
     /**
      * Contants
@@ -30,7 +35,15 @@ module.exports = {
       langPrefix: 'lang-'
     };
 
-    $d['marked']($i.mdString, MARKED_OPTS, function(err, htmlString) {
+    // Parse metadata
+    var metadata = _.reduce(mdString.match(/<docmeta[^>]*>/igm)||[], function (m, tag) {
+      try {
+        m[tag.match(/name="([^">]+)"/i)[1]] = tag.match(/value="([^">]+)"/i)[1];
+      } catch(e) {}
+      return m;
+    }, {});
+
+    marked($i.mdString, MARKED_OPTS, function(err, htmlString) {
       if (err) return $x.error(err);
       return $x.success(htmlString);
     });
