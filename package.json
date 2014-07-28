@@ -17,15 +17,18 @@
   },
   "dependencies": {
     "fs-extra": "~0.10.0",
-    "node-machine": "0.0.4",
+    "node-machine": "~0.0.4",
     "marked": "~0.3.2",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "async": "~0.9.0"
   },
   "machinepack": {
     "focus": "markdown",
     "machine-api": "~0.0.0",
     "machines": [
-      "compile-from-file-to-file"
+      "compile-to-html",
+      "parse-docmeta-tags",
+      "compile-to-html-file-from-md-file",
     ]
   }
 }

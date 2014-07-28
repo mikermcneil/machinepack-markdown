@@ -2,14 +2,14 @@
  * Module dependencies
  */
 
-var _ = require('lodash');
 var fsx = require ('fs-extra');
+var async = require('async');
 var M = require('node-machine');
 
 
 module.exports = {
 
-  id: 'compile-from-file-to-file',
+  id: 'compile-to-html-file-from-md-file',
   moduleName: 'machinepack-markdown',
   description: 'Load a markdown file from disk, compile to HTML, then save it back to disk.',
   //
@@ -57,9 +57,12 @@ module.exports = {
   },
   exits: {
     error: {},
+    errorInBeforeConvert: {},
+    errorInAfterConvert: {},
     couldNotRead: {},
     couldNotWrite: {},
     couldNotCompile: {},
+    couldNotParse: {},
     success: {
       example: {
         uniqueID: 'sailssocketsunsubscribeFromFirehose999488',
@@ -77,22 +80,49 @@ module.exports = {
       if (err) return $x.couldNotRead(err);
 
       $i.beforeConvert(mdString, function(err, mdString) {
-        if (err) return $x.couldNotCompile(err);
+        if (err) return $x.errorInBeforeConvert(err);
 
-        M.build(require('./compile'))
-        .configure({mdString:mdString})
-        .exec(function(err, htmlString) {
-          if (err) return $x.couldNotCompile(err);
+        async.auto({
+          htmlString: function (cb) {
+            M.build(require('./compile-to-html'))
+            .configure({mdString:mdString})
+            .exec(function (err, htmlString) {
+              if (err) {
+                return cb({
+                  output: err,
+                  exit: $x.couldNotCompile
+                });
+              }
+              return cb(null, htmlString);
+            });
+          },
+          metadata: function (cb) {
+            M.build(require('./parse-docmeta-tags'))
+            .configure({haystack: mdString})
+            .exec(function (err, metadata) {
+              if (err) {
+                return cb({
+                  output: err,
+                  exit: $x.couldNotParse
+                });
+              }
+              return cb(null, metadata);
+            });
+          }
+        }, function (err, async_data) {
+          if (err && err.output && err.exit) return err.exit(err.output);
+          if (err) return $x.error(err);
 
-          $i.afterConvert(htmlString, function(err, htmlString) {
-            if (err) return $x.couldNotCompile(err);
+          $i.afterConvert(async_data.htmlString, function(err, htmlString) {
+            if (err) return $x.errorInAfterConvert(err);
 
             fsx.outputFile($i.dest, htmlString, function(err) {
               if (err) return $x.couldNotWrite(err);
-              return $x.success(metadata);
+              return $x.success(async_data.metadata);
             });
           });
         });
+
       });
     });
   }

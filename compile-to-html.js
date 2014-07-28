@@ -8,7 +8,7 @@ var marked = require('marked');
 
 module.exports = {
 
-  id: 'compile',
+  id: 'compile-to-html',
   moduleName: 'machinepack-markdown',
   description: 'Compile some markdown to HTML.',
   inputs: {
@@ -24,26 +24,11 @@ module.exports = {
   },
 
   fn: function($i, $x) {
-
-    /**
-     * Contants
-     * @type {Object}
-     */
-    var MARKED_OPTS = {
+    marked($i.mdString, {
       gfm: true,
       tables: true,
       langPrefix: 'lang-'
-    };
-
-    // Parse metadata
-    var metadata = _.reduce(mdString.match(/<docmeta[^>]*>/igm)||[], function (m, tag) {
-      try {
-        m[tag.match(/name="([^">]+)"/i)[1]] = tag.match(/value="([^">]+)"/i)[1];
-      } catch(e) {}
-      return m;
-    }, {});
-
-    marked($i.mdString, MARKED_OPTS, function(err, htmlString) {
+    }, function(err, htmlString) {
       if (err) return $x.error(err);
       return $x.success(htmlString);
     });
