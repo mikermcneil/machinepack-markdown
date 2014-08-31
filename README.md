@@ -6,13 +6,18 @@
 ## Installation
 
 ```sh
-$ npm install node-machine
 $ npm install machinepack-markdown
 ```
 
 ## Basic Usage
 
+```javascript
+var Markdown = require('machinepack-markdown');
 
+Markdown.compileToHtml({
+  mdString: 'some markdown string'
+}, console.log);
+```
 
 
 
