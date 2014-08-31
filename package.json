@@ -1,6 +1,6 @@
-  {
+{
   "name": "machinepack-markdown",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "scripts": {
     "test": "mocha -b"
@@ -17,11 +17,10 @@
   },
   "dependencies": {
     "fs-extra": "~0.10.0",
-    "node-machine": "~0.0.4",
+    "node-machine": "~0.2.0",
     "marked": "~0.3.2",
     "lodash": "~2.4.1",
-    "async": "~0.9.0",
-    "node-machine": "~0.2.0"
+    "async": "~0.9.0"
   },
   "machinepack": {
     "focus": "markdown",
