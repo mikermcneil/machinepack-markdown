@@ -23,12 +23,11 @@
     "async": "~0.9.0"
   },
   "machinepack": {
-    "focus": "markdown",
-    "machine-api": "~0.0.0",
+    "machineDir": "machines",
     "machines": [
+      "compile-to-html-file-from-md-file",
       "compile-to-html",
-      "parse-docmeta-tags",
-      "compile-to-html-file-from-md-file"
+      "parse-docmeta-tags"
     ]
   }
 }
