@@ -1,5 +1,6 @@
 {
   "name": "machinepack-markdown",
+  "description": "Machines for working with Markdown-formatted text.",
   "version": "0.0.8",
   "description": "",
   "scripts": {
