@@ -84,7 +84,7 @@ module.exports = {
           });
         },
         metadata: function (cb) {
-          M.build(require('./parse-docmeta-tags'))
+          M.build(require('../lib/parse-docmeta-tags'))
           .configure({haystack: mdString})
           .exec(function (err, metadata) {
             if (err) {
@@ -100,7 +100,7 @@ module.exports = {
         if (err && err.output && err.exit) return err.exit(err.output);
         if (err) return exits.error(err);
 
-        fsx.outputFile(inputs.dest, htmlString, function(err) {
+        fsx.outputFile(inputs.dest, async_data.htmlString, function(err) {
           if (err) return exits.couldNotWrite(err);
           return exits.success(async_data.metadata);
         });
