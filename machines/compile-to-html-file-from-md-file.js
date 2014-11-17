@@ -32,10 +32,12 @@ module.exports = {
   //
   inputs: {
     src: {
+      description: 'Path (relative or absolute) to the Markdown file to convert.',
       example: '.tmp/compile-markdown-tree/some/markdown/file.md',
       required: true
     },
     dest: {
+      description: 'Path (relative or absolute) to the HTML file to create.',
       example: '.tmp/public/templates/documentation/reference',
       required: true
     }

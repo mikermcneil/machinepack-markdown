@@ -7,6 +7,7 @@ module.exports = {
 
   inputs: {
     mdString: {
+      description: 'Markdown string to convert.',
       example: '# hello world\n it\'s me, some markdown string \n\n ```js\n//but maybe i have code snippets too...\n```',
       required: true
     }
