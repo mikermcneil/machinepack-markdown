@@ -9,6 +9,11 @@ module.exports = {
       description: 'Markdown string to convert',
       example: '# hello world\n it\'s me, some markdown string \n\n ```js\n//but maybe i have code snippets too...\n```',
       required: true
+    },
+
+    ignoreHtml: {
+      description: 'Ignore any inline HTML in the markdown (i.e. don\'t include it in the converted HTML output).  Defaults to `false`.',
+      example: true
     }
   },
 
@@ -29,6 +34,7 @@ module.exports = {
     marked(inputs.mdString, {
       gfm: true,
       tables: true,
+      sanitize: inputs.ignoreHtml,
       langPrefix: 'lang-'
     }, function(err, htmlString) {
       if (err) return exits.error(err);
