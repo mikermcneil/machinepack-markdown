@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "fs-extra": "~0.10.0",
-    "node-machine": "~0.2.0",
+    "node-machine": "~1.0.0",
     "marked": "~0.3.2",
     "lodash": "~2.4.1",
     "async": "~0.9.0"
