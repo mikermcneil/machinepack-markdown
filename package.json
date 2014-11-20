@@ -1,6 +1,6 @@
 {
   "name": "machinepack-markdown",
-  "description": "Machines for working with Markdown-formatted text.",
+  "description": "Work with Markdown-formatted text (convert to HTML, etc.)",
   "version": "0.2.0",
   "scripts": {
     "test": "mocha -b"
