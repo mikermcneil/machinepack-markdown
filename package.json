@@ -1,7 +1,7 @@
 {
   "name": "machinepack-markdown",
   "description": "Machines for working with Markdown-formatted text.",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "scripts": {
     "test": "mocha -b"
   },
