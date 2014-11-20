@@ -6,9 +6,11 @@
     "test": "mocha -b"
   },
   "keywords": [
+    "machinepack",
+    "machines",
     "markdown",
-    "machine",
-    "machines"
+    "markdown-to-html",
+    "convert-markdown"
   ],
   "author": "",
   "license": "MIT",
