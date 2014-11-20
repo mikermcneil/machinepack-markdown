@@ -41,22 +41,22 @@ module.exports = {
   },
 
   defaultExit: 'success',
-  catchallExit: 'error',
+  catchallExit: 'couldNotCompile',
 
   exits: {
-    error: {},
-    errorInBeforeConvert: {},
-    errorInAfterConvert: {},
-    couldNotRead: {},
-    couldNotWrite: {},
-    couldNotCompile: {},
-    couldNotParse: {},
-    success: {
-      example: {
-        uniqueID: 'sailssocketsunsubscribeFromFirehose999488',
-        displayName: 'sails.sockets.unsubscribeFromFirehose()'
-      }
-    }
+    couldNotRead: {
+      description: 'Could not read source file from disk'
+    },
+    couldNotWrite: {
+      description: 'Could not write file back to disk'
+    },
+    couldNotCompile: {
+      description: 'Could not compile markdown to HTML'
+    },
+    couldNotParse: {
+      description: 'Could not parse "docmeta" tags'
+    },
+    success: {}
   },
 
   fn: function(inputs, exits) {
