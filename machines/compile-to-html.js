@@ -1,13 +1,12 @@
 module.exports = {
 
-  identity: 'compile-to-html',
-  friendlyName: 'Compile to html',
+  friendlyName: 'Compile a Markdown string to HTML',
   description: 'Compile some markdown to HTML.',
   cacheable: true,
 
   inputs: {
     mdString: {
-      description: 'Markdown string to convert.',
+      description: 'Markdown string to convert',
       example: '# hello world\n it\'s me, some markdown string \n\n ```js\n//but maybe i have code snippets too...\n```',
       required: true
     }

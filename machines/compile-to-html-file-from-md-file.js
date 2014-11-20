@@ -1,9 +1,6 @@
 module.exports = {
-
-  identity: 'compile-to-html-file-from-md-file',
-  friendlyName: 'compile to html file from md file',
+  friendlyName: 'Convert a Markdown file on disk into an HTML file',
   description: 'Load a markdown file from disk, compile to HTML, then save it back to disk.',
-  cacheable: true,
 
   //
   // Steps:
