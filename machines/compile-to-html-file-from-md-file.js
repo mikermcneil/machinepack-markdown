@@ -41,7 +41,6 @@ module.exports = {
   },
 
   defaultExit: 'success',
-  catchallExit: 'couldNotCompile',
 
   exits: {
     couldNotRead: {
@@ -56,7 +55,15 @@ module.exports = {
     couldNotParse: {
       description: 'Could not parse "docmeta" tags'
     },
-    success: {}
+    error: {
+      description: 'Unexpected error'
+    },
+    success: {
+      example: [{
+        name: 'foo',
+        value: 'bar'
+      }]
+    }
   },
 
   fn: function(inputs, exits) {
@@ -83,8 +90,8 @@ module.exports = {
           });
         },
         metadata: function (cb) {
-          M.build(require('../lib/parse-docmeta-tags'))
-          .configure({haystack: mdString})
+          M.build(require('./parse-docmeta-tags'))
+          .configure({mdString: mdString})
           .exec(function (err, metadata) {
             if (err) {
               return cb({
@@ -92,6 +99,7 @@ module.exports = {
                 exit: exits.couldNotParse
               });
             }
+
             return cb(null, metadata);
           });
         }

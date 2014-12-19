@@ -28,6 +28,7 @@
     "machineDir": "machines",
     "machines": [
       "compile-to-html-file-from-md-file",
+      "parse-docmeta-tags",
       "compile-to-html"
     ]
   }
