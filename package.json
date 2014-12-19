@@ -19,10 +19,10 @@
   },
   "dependencies": {
     "fs-extra": "~0.10.0",
-    "node-machine": "~1.0.0",
     "marked": "~0.3.2",
     "lodash": "~2.4.1",
-    "async": "~0.9.0"
+    "async": "~0.9.0",
+    "machine": "^1.0.7"
   },
   "machinepack": {
     "machineDir": "machines",

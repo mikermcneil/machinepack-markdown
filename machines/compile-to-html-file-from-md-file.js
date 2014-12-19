@@ -63,7 +63,7 @@ module.exports = {
 
     var fsx = require ('fs-extra');
     var async = require('async');
-    var M = require('node-machine');
+    var M = require('machine');
 
     fsx.readFile(inputs.src, 'utf8', function(err, mdString) {
       if (err) return exits.couldNotRead(err);
