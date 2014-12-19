@@ -30,7 +30,7 @@ module.exports = {
 
     var _ = require('lodash');
 
-    var results = _.reduce(inputs.haystack.match(/<docmeta[^>]*>/igm)||[], function (m, tag) {
+    var results = _.reduce(inputs.mdString.match(/<docmeta[^>]*>/igm)||[], function (m, tag) {
       try {
         m.push({
           name: tag.match(/name="([^">]+)"/i)[1],
