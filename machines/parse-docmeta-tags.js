@@ -38,7 +38,7 @@ module.exports = {
         });
       } catch(e) {}
       return m;
-    }, {});
+    }, []);
 
     return exits.success(results);
   }
