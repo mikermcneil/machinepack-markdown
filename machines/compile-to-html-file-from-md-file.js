@@ -40,8 +40,6 @@ module.exports = {
     }
   },
 
-  defaultExit: 'success',
-
   exits: {
     couldNotRead: {
       description: 'Could not read source file from disk'

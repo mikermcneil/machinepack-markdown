@@ -3,6 +3,7 @@ module.exports = {
   friendlyName: 'Parse <docmeta> tags',
   description: 'Parse data encoded via <docmeta> tags in a Markdown string',
   cacheable: true,
+  sync: true,
 
   inputs: {
     mdString: {
@@ -11,8 +12,6 @@ module.exports = {
       required: true
     }
   },
-
-  defaultExit: 'success',
 
   exits: {
     error: {},
