@@ -3,7 +3,7 @@
   "description": "Work with Markdown-formatted text (convert to HTML, etc.)",
   "version": "1.0.3",
   "scripts": {
-    "test": "mocha -b"
+    "test": "node ./node_modules/test-machinepack-mocha/bin/testmachinepack-mocha.js"
   },
   "keywords": [
     "machinepack",
@@ -35,6 +35,7 @@
       "compile-to-html-file-from-md-file",
       "parse-docmeta-tags",
       "compile-to-html"
-    ]
+    ],
+    "testsUrl": "https://travis-ci.org/mikermcneil/machinepack-markdown"
   }
 }
