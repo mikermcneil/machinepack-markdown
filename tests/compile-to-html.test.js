@@ -1,6 +1,11 @@
+/**
+ * Module dependencies
+ */
+
 var assert = require('assert');
 var testMachineWithMocha = require('test-machinepack-mocha').testMachineWithMocha;
 var Markdown = require('../');
+
 
 
 describe('compileToHtml()', function() {
@@ -97,4 +102,4 @@ describe('compileToHtml()', function() {
 
   });//</when providing a custom lifecycle callback for `compileCodeBlock`>
 
-});
+});//<compileToHtml()>
