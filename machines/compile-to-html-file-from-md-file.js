@@ -8,7 +8,7 @@ module.exports = {
 
 
   extendedDescription:
-    'Expects GitHub-flavored Markdown syntax.  Uses [`marked`](https://github.com/chjj/marked). '+
+  'Expects GitHub-flavored Markdown syntax.  Uses [`marked`](https://github.com/chjj/marked). '+
   'Specifically, here\'s how this method works:\n'+
   '\n'+
   ' Steps:\n'+
