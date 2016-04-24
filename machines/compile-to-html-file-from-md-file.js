@@ -16,14 +16,7 @@ module.exports = {
   '\n'+
   ' + stream bytes from disk\n'+
   '\n'+
-  ' + when all bytes are in RAM, call the `beforeConvert()` lifecycle\n'+
-  '   hook (if one exists) to perform an optional transformation of the\n'+
-  '   markdown string.\n'+
-  '\n'+
-  ' + convert the (possibly now-transformed) markdown to HTML\n'+
-  '\n'+
-  ' + call the `afterConvert()` lifecycle hook (if one exists) to perform\n'+
-  '   an optional transformation of the HTML string.\n'+
+  ' + when all bytes are in RAM, convert the source markdown to HTML\n'+
   '\n'+
   ' + send the bytes of the (possibly now-transformed) HTML to the path on\n'+
   '   disk specified by `dest.html` as a write stream.  When the stream\n'+
@@ -83,22 +76,6 @@ module.exports = {
         }
       }//</inputs.compileCodeBlock.contract>
     },//</inputs.compileCodeBlock>
-
-    // beforeConvert: {
-    //   description: 'An optional lifecycle hook that is called to transform source Markdown before converting.',
-    //   example: '->',
-    //   contract: {
-    //     // ...TODO
-    //   }
-    // },
-
-    // afterConvert: {
-    //   description: 'An optional lifecycle hook that is called to transform compiled HTML before it is returned.',
-    //   example: '->',
-    //   contract: {
-    //     // ...TODO
-    //   }
-    // },
 
   },
 
