@@ -56,7 +56,6 @@ module.exports = {
         sideEffects: 'cacheable',
         inputs: {
           codeBlockContents: {
-            friendlyName: 'Code block contents',
             description: 'The raw (unescaped) contents of the code block.',
             example: '\nconsole.log("hello");\n'
           },
@@ -85,12 +84,8 @@ module.exports = {
     success: {
       outputFriendlyName: 'Parsed metadata',
       outputDescription: 'The metadata parsed from <docmeta> tags in the source markdown.',
-      example: [
-        {
-          name: 'foo',
-          value: 'bar'
-        }
-      ]
+      extendedDescription: 'The `name` is the key (left-hand side) and the `value` is the value (right-hand side).  The values are always strings.',
+      example: {}
     },
 
     couldNotRead: {

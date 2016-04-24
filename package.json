@@ -21,9 +21,9 @@
   },
   "dependencies": {
     "async": "1.5.2",
-    "fs-extra": "0.28.0",
-    "lodash": "3.10.1",
+    "lodash.reduce": "4.3.0",
     "machine": "^12.2.1",
+    "machinepack-fs": "^8.0.2",
     "marked": "0.3.5"
   },
   "repository": {

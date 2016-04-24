@@ -39,7 +39,6 @@ module.exports = {
         sideEffects: 'cacheable',
         inputs: {
           codeBlockContents: {
-            friendlyName: 'Code block contents',
             description: 'The raw (unescaped) contents of the code block.',
             example: '\nconsole.log("hello");\n'
           },

@@ -6,16 +6,10 @@
         "mdString": "# hello world\nit's me!\n\n<docmeta name=\"foo\" value=\"bar\"><docmeta name=\"boo\" value=\"far\">"
       },
       "outcome": "success",
-      "returns": [
-        {
-          "name": "foo",
-          "value": "bar"
-        },
-        {
-          "name": "boo",
-          "value": "far"
-        }
-      ]
+      "returns": {
+        "foo": "bar",
+        "boo": "far"
+      }
     }
   ]
 }

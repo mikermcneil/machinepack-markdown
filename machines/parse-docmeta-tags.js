@@ -27,32 +27,26 @@ module.exports = {
   exits: {
 
     success: {
-      example: [
-        {
-          name: 'foo',
-          value: 'bar'
-        }
-      ]
+      outputFriendlyName: 'Parsed metadata',
+      outputDescription: 'The metadata parsed from <docmeta> tags in the source markdown.',
+      extendedDescription: 'The `name` is the key (left-hand side) and the `value` is the value (right-hand side).  The values are always strings.',
+      example: {}
     }
 
   },
 
 
   fn: function(inputs, exits) {
+    var reduce = require('lodash.reduce');
 
-    var _ = require('lodash');
+    var metadata = reduce(inputs.mdString.match(/<docmeta[^>]*>/igm)||[], function (memo, tag) {
+      var name = tag.match(/name="([^">]+)"/i)[1];
+      var value = tag.match(/value="([^">]+)"/i)[1];
+      memo[name] = value;
+      return memo;
+    }, {});
 
-    var results = _.reduce(inputs.mdString.match(/<docmeta[^>]*>/igm)||[], function (m, tag) {
-      try {
-        m.push({
-          name: tag.match(/name="([^">]+)"/i)[1],
-          value: tag.match(/value="([^">]+)"/i)[1]
-        });
-      } catch(e) {}
-      return m;
-    }, []);
-
-    return exits.success(results);
+    return exits.success(metadata);
   }
 
 
