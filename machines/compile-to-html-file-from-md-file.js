@@ -1,5 +1,9 @@
 module.exports = {
+
+
   friendlyName: 'Convert a Markdown file on disk into an HTML file',
+
+
   description: 'Load a markdown file from disk, compile to HTML, then save it back to disk.',
 
   //
@@ -57,10 +61,13 @@ module.exports = {
       description: 'Unexpected error'
     },
     success: {
-      example: [{
-        name: 'foo',
-        value: 'bar'
-      }]
+      outputFriendlyName: 'mdMetadata',
+      example: [
+        {
+          name: 'foo',
+          value: 'bar'
+        }
+      ]
     }
   },
 
