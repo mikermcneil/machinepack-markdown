@@ -49,6 +49,41 @@ module.exports = {
       required: true
     },
 
+    escapeHtml: {
+      description: 'If enabled, any inline HTML in the source Markdown will be escaped instead of injected literally in the HTML output.',
+      example: false,
+      defaultsTo: false
+    },
+
+    compileCodeBlock: {
+      description: 'An optional lifecycle callback useful for adding syntax highlighting to code blocks, or to perform custom HTML-escaping on them.',
+      extendedDescription: 'This callback is called once for each code block in the source Markdown, and expected to return compiled HTML.',
+      example: '->',
+      contract: {
+        sideEffects: 'cacheable',
+        inputs: {
+          codeBlockContents: {
+            friendlyName: 'Code block contents',
+            description: 'The raw (unescaped) contents of the code block.',
+            example: '\nconsole.log("hello");\n'
+          },
+          programmingLanguage: {
+            description: 'The programming language of the code block.',
+            extendedDescription:
+              'Be warned that this is not normalized. In other words, if one code block in the source Markdown indicates `js`, and another indicates `javascript`, then this function will be called with `js` for the first one, and with `javascript` for the second.',
+            example: 'javascript'
+          }
+        },
+        exits: {
+          success: {
+            outputDescription: 'The compiled, _escaped_ HTML representing the contents of the code block.',
+            extendedDescription: 'The compiled HTML output returned here will be wrapped in `<pre>` and `<code>` tags automatically.',
+            example: 'console.<span class="function call">log</span>(<span class="string">\'hello\'</span>);'
+          }
+        }
+      }//</inputs.compileCodeBlock.contract>
+    },//</inputs.compileCodeBlock>
+
     // beforeConvert: {
     //   description: 'An optional lifecycle hook that is called to transform source Markdown before converting.',
     //   example: '->',
@@ -82,71 +117,70 @@ module.exports = {
     },
 
     couldNotRead: {
-      description: 'Could not read source file from disk'
+      description: 'Could not read source file from disk.'
     },
 
     couldNotWrite: {
-      description: 'Could not write file back to disk'
+      description: 'Could not write file back to disk.'
     },
 
     couldNotCompile: {
-      description: 'Could not compile markdown to HTML'
+      description: 'Could not compile markdown to HTML.'
     },
 
     couldNotParse: {
-      description: 'Could not parse "docmeta" tags'
+      description: 'Could not parse "docmeta" tags.'
     }
 
   },
 
 
   fn: function(inputs, exits) {
-
-    var fsx = require ('fs-extra');
     var async = require('async');
-    var M = require('machine');
+    var Filesystem = require('machinepack-fs');
+    var Markdown = require('../');
 
-    fsx.readFile(inputs.src, 'utf8', function(err, mdString) {
+
+    Filesystem.read({ source: inputs.src }).exec(function (err, mdString) {
       if (err) { return exits.couldNotRead(err); }
 
       async.auto({
-        htmlString: function (cb) {
-          M.build(require('./compile-to-html'))
-          .configure({mdString:mdString})
-          .exec(function (err, htmlString) {
-            if (err) {
-              return cb({
-                output: err,
-                exit: exits.couldNotCompile
-              });
-            }
-            return cb(null, htmlString);
-          });
-        },
-        metadata: function (cb) {
-          M.build(require('./parse-docmeta-tags'))
-          .configure({mdString: mdString})
-          .exec(function (err, metadata) {
-            if (err) {
-              return cb({
-                output: err,
-                exit: exits.couldNotParse
-              });
-            }
 
-            return cb(null, metadata);
+        htmlString: function (next) {
+          Markdown.compileToHtml({
+            mdString: mdString,
+            escapeHtml: inputs.escapeHtml,
+            compileCodeBlock: inputs.compileCodeBlock
+          }).exec(function (err, htmlString) {
+            if (err) { return next({ output: err, exit: 'couldNotCompile' }); }
+            else { return next(undefined, htmlString); }
           });
-        }
-      }, function (err, async_data) {
-        if (err && err.output && err.exit) { return err.exit(err.output); }
+        },//</async.auto::htmlString>
+
+        metadata: function (next) {
+          Markdown.parseDocmetaTags({
+            mdString: mdString
+          }).exec(function (err, metadata) {
+            if (err) { return next({ output: err, exit: 'couldNotParse' }); }
+            else { return next(undefined, metadata); }
+          });
+        }//</async.auto::metadata>
+
+      }, function afterwards (err, asyncAutoResults) {
+        if (err && err.exit==='couldNotCompile') { return exits.couldNotCompile(err.output); }
+        else if (err && err.exit==='couldNotParse') { return exits.couldNotParse(err.output); }
         else if (err) { return exits.error(err); }
 
-        fsx.outputFile(inputs.dest, async_data.htmlString, function(err) {
+        Filesystem.write({
+          destination: inputs.dest,
+          string: asyncAutoResults.htmlString,
+          force: true
+        }).exec(function(err) {
           if (err) { return exits.couldNotWrite(err); }
-          return exits.success(async_data.metadata);
-        });
-      });
-    });
+          return exits.success(asyncAutoResults.metadata);
+        });//</Filesystem.write()>
+      });//</afterwards from async.auto()>
+    });//</Filesystem.readFile()>
   }
 
 
