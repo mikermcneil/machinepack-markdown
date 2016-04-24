@@ -1,20 +1,31 @@
 module.exports = {
 
+
   friendlyName: 'Parse <docmeta> tags',
-  description: 'Parse data encoded via <docmeta> tags in a Markdown string',
-  cacheable: true,
+
+
+  description: 'Parse data encoded via <docmeta> tags in a Markdown string.',
+
+
+  sideEffects: 'cacheable',
+
+
   sync: true,
 
+
   inputs: {
+
     mdString: {
       description: 'Markdown string to parse',
       example: '# hello world\n it\'s me, <docmeta name="foo" value="bar"/> \n some string \n\n',
       required: true
     }
+
   },
 
+
   exits: {
-    error: {},
+
     success: {
       example: [
         {
@@ -23,7 +34,9 @@ module.exports = {
         }
       ]
     }
+
   },
+
 
   fn: function(inputs, exits) {
 
@@ -41,4 +54,6 @@ module.exports = {
 
     return exits.success(results);
   }
+
+
 };

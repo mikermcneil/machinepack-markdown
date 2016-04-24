@@ -1,13 +1,13 @@
 module.exports = {
 
 
-  friendlyName: 'Compile a Markdown string to HTML',
+  friendlyName: 'Compile to HTML',
 
 
-  description: 'Compile some markdown to HTML.',
+  description: 'Compile a Markdown string into an HTML string.',
 
 
-  cacheable: true,
+  sideEffects: 'cacheable',
 
 
   inputs: {
