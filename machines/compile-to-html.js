@@ -27,6 +27,7 @@ module.exports = {
 
     escapeHtml: {
       description: 'If enabled, any inline HTML in the source Markdown will be escaped instead of injected literally in the HTML output.',
+      extendedDescription: 'This prevents against XSS attacks resulting from script tags in the source Markdown string.',
       example: false,
       defaultsTo: false
     },
@@ -78,13 +79,20 @@ module.exports = {
     // For full list of options, see:
     //  • https://github.com/chjj/marked
     var markedOpts = {
-      sanitize: inputs.escapeHtml,
       gfm: true,
       tables: true,
       breaks: false,
       pedantic: false,
       smartLists: true,
       smartypants: false,
+      // For more on XSS escaping in relation to Markdown, see:
+      //  • https://github.com/showdownjs/showdown/wiki/Markdown's-XSS-Vulnerability-(and-how-to-mitigate-it)
+      //  • https://snyk.io/vuln/npm:marked:20150520
+      // Security patch for `marked`:
+      //  • https://github.com/Snyk/vulndb/blob/snapshots/master/patches/npm/marked/20150520/marked_20150520_0_0_2cff85979be8e7a026a9aca35542c470cf5da523.patch
+      // General overview of XSS contexts:
+      //  • https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet#You_Need_a_Security_Encoding_Library
+      sanitize: inputs.escapeHtml
     };
 
     // If `compileCodeBlock` lifecycle callback was provided, attach the `highlight` option.
