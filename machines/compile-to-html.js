@@ -93,6 +93,11 @@ module.exports = {
       // General overview of XSS contexts:
       //  • https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet#You_Need_a_Security_Encoding_Library
       sanitize: inputs.escapeHtml
+      // TODO: probably need to change this-- instead of using Marked's escaping, it's safer
+      // and easier to maintain if this is just pulled into a post-compilation check.
+      // That is, HTML-escaping the actual output.  Alternatively, we could just want to remove
+      // this option.   But that's not a real solution, that's a cop-out, and the problem will
+      // still be there.
     };
 
     // If `compileCodeBlock` lifecycle callback was provided, attach the `highlight` option.
