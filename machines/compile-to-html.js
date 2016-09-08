@@ -25,11 +25,20 @@ module.exports = {
       required: true
     },
 
-    escapeHtml: {
-      description: 'If enabled, any inline HTML in the source Markdown will be escaped instead of injected literally in the HTML output.',
-      extendedDescription: 'This prevents against XSS attacks resulting from script tags in the source Markdown string.',
-      example: false,
-      defaultsTo: false
+    allowHtml: {
+      friendlyName: 'Allow HTML?',
+      description: 'Whether or not to allow HTML tags in the Markdown input.  Defaults to `true`.',
+      extendedDescription: 'If `false`, any input that contains HTML tags will trigger the `unsafeMarkdown` exit.',
+      example: true,
+      defaultsTo: true
+    },
+
+    addIdsToHeadings: {
+      friendlyName: 'Add IDs to headers?',
+      description: 'Whether or not to add an ID attribute to rendered heading tags like <h1>',
+      extendedDescription: 'This is not part of the Markdown specification, but it is the default behavior for the `marked` module.  Defaults to `true`.',
+      example: true,
+      defaultsTo: true
     },
 
     compileCodeBlock: {
@@ -68,7 +77,13 @@ module.exports = {
     success: {
       outputFriendlyName: 'HTML',
       example: '<h1 id="hello-world">hello world</h1>\n<p> it&#39;s me, some markdown string </p>\n<pre><code class="lang-js">//but maybe i have code snippets too...</code></pre>\n'
+    },
+
+    unsafeMarkdown: {
+      friendlyName: 'Unsafe Markdown detected',
+      description: 'The provided input contained unsafe content (like HTML tags).'
     }
+
 
   },
 
@@ -85,20 +100,15 @@ module.exports = {
       pedantic: false,
       smartLists: true,
       smartypants: false,
-      // For more on XSS escaping in relation to Markdown, see:
-      //  • https://github.com/showdownjs/showdown/wiki/Markdown's-XSS-Vulnerability-(and-how-to-mitigate-it)
-      //  • https://snyk.io/vuln/npm:marked:20150520
-      // Security patch for `marked`:
-      //  • https://github.com/Snyk/vulndb/blob/snapshots/master/patches/npm/marked/20150520/marked_20150520_0_0_2cff85979be8e7a026a9aca35542c470cf5da523.patch
-      // General overview of XSS contexts:
-      //  • https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet#You_Need_a_Security_Encoding_Library
-      sanitize: inputs.escapeHtml
-      // TODO: probably need to change this-- instead of using Marked's escaping, it's safer
-      // and easier to maintain if this is just pulled into a post-compilation check.
-      // That is, HTML-escaping the actual output.  Alternatively, we could just want to remove
-      // this option.   But that's not a real solution, that's a cop-out, and the problem will
-      // still be there.
     };
+
+    if (inputs.addIdsToHeadings === false) {
+      var renderer = new marked.Renderer();
+      renderer.heading = function (text, level) {
+        return '<h'+level+'>'+text+'</h'+level+'>';
+      };
+      markedOpts.renderer = renderer;
+    }
 
     // If `compileCodeBlock` lifecycle callback was provided, attach the `highlight` option.
     if (inputs.compileCodeBlock) {
@@ -123,7 +133,24 @@ module.exports = {
     // Now actually compile the markdown to HTML.
     marked(inputs.mdString, markedOpts, function afterwards (err, htmlString) {
       if (err) { return exits.error(err); }
-      return exits.success(htmlString);
+
+      // If we're not allowing HTML, compile the input again with the `sanitize` option on.
+      if (inputs.allowHtml === false) {
+        markedOpts.sanitize = true;
+        marked(inputs.mdString, markedOpts, function sanitized (err, sanitizedHtmlString) {
+          if (err) { return exits.error(err); }
+
+          // Now compare the unsanitized and the sanitized output, and if they're not the same,
+          // leave through the `unsafeMarkdown` exit since it means that HTML tags were detected.
+          if (htmlString !== sanitizedHtmlString) {
+            return exits.unsafeMarkdown();
+          }
+          return exits.success(htmlString);
+        });
+      }
+      else {
+        return exits.success(htmlString);
+      }
     });
   }
 
