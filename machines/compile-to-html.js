@@ -36,7 +36,7 @@ module.exports = {
     addIdsToHeadings: {
       friendlyName: 'Add IDs to headers?',
       description: 'Whether or not to add an ID attribute to rendered heading tags like <h1>',
-      extendedDescription: 'This is not part of the Markdown specification, but it is the default behavior for the `marked` module.  Defaults to `true`.',
+      extendedDescription: 'This is not part of the Markdown specification (see http://daringfireball.net/projects/markdown/dingus), but it is the default behavior for the `marked` module.  Defaults to `true`.',
       example: true,
       defaultsTo: true
     },
