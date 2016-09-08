@@ -1,7 +1,7 @@
 {
   "name": "machinepack-markdown",
   "description": "Work with Markdown-formatted text (convert to HTML, etc.)",
-  "version": "2.0.0",
+  "version": "3.0.0-0",
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha -R dot --recursive ./tests/ && node ./node_modules/test-machinepack-mocha/bin/testmachinepack-mocha.js"
   },
